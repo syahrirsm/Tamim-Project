@@ -1,47 +1,51 @@
 //TAMIM
 #include <SoftwareSerial.h>
 #define dialPin 2
-#define handsetPin 3
+#define handsetPin 5
 #define ledPin 4
 int count;
 int digit;
-unsigned long number = 0;
+String number = "";
 unsigned long prev;
 bool hold = true;
 bool holdBtn = true;
 String _buffer;
 int _timeout;
-String countri = "+49";
-
+String countri = "+62";
+bool looping = false;
 SoftwareSerial sim(10, 11); // Pin 10 to TX (SIM800), Pin 11 to RX (SIM800)
 
 void setup() {
   sim.begin(9600);
   Serial.begin(9600);
-  pinMode(dialPin, INPUT);
-  pinMode(handsetPin, INPUT);
+  pinMode(dialPin, INPUT_PULLUP);
+  pinMode(handsetPin, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
+  Serial.println("READY");
 }
 
 void loop() {
 
   if (digitalRead(dialPin) == LOW) {
+    looping = true;
     while (digitalRead(dialPin) == LOW) {}
     hold = true;
     prev = millis();
-    if (count < 10) {
-      count++;
-      Serial.print(count);
+    count++;
+    Serial.print(count);
+    if (count > 10) {
+      count = 1;
     }
   }
-
   if (millis() - prev > 1000) {
     if (hold == true) {
       if (count == 10) {
         count = 0;
       }
       hold = false;
-      number = number * 10 + (count - 0);
+      if (looping == true) {
+        number += String(count);
+      }
       digit++;
       count = 0;
       Serial.println();
@@ -49,12 +53,15 @@ void loop() {
     }
   }
 
-  if (digitalRead(handsetPin) == LOW && digit > 12) {
-    Serial.println("Calling: " + countri + String(number));
-    callNumber(String(number));
-    number = 0;
+
+  if (digitalRead(handsetPin) == LOW && digit > 10) {
+    Serial.println("Calling: " + countri + number);
+    callNumber(number);
+    number = "";
     digit = 0;
   }
+
+  //  looping = true;
 }
 
 void callNumber(String num) {
