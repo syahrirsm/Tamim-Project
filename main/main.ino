@@ -18,8 +18,8 @@ SoftwareSerial sim(10, 11); // Pin 10 to TX (SIM800), Pin 11 to RX (SIM800)
 void setup() {
   sim.begin(9600);
   Serial.begin(9600);
-  pinMode(dialPin, INPUT_PULLUP);
-  pinMode(handsetPin, INPUT_PULLUP);
+  pinMode(dialPin, INPUT);
+  pinMode(handsetPin, INPUT);
   pinMode(ledPin, OUTPUT);
   Serial.println("READY");
 }
