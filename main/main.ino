@@ -82,7 +82,7 @@ void loop() {
   else if (action == 1 && digitalRead(handsetPin) == LOW) {
     //    while (action == 1 && digitalRead(handsetPin) == LOW) {}
     Serial.println("MATIKAN PANGGILAN");
-    sim.print (F("ATH\r\n"));
+    sim.print ("ATH\r\n");
     action = 0;
   }
 
