@@ -1,7 +1,7 @@
 //TAMIM
 #include <SoftwareSerial.h>
 #define dialPin 2
-#define handsetPin 5
+#define handsetPin 3
 #define ledPin 4
 #define ring 9
 int count;
@@ -12,7 +12,7 @@ bool hold = true;
 bool holdBtn = true;
 String _buffer;
 int _timeout;
-String countri = "+62";
+String countri = "+62"; //countri code
 bool looping = false;
 int action = 0;
 SoftwareSerial sim(10, 11); // Pin 10 to TX (SIM800), Pin 11 to RX (SIM800)
